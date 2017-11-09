@@ -27,3 +27,8 @@ production:
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
+  host: "db.production.local"
+  database: "production_db"
+  user: "production_user"
+  port: "5432"
+  password: "REDACTED_DATABASE_PASSWORD"
