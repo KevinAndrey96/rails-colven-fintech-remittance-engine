@@ -38,7 +38,11 @@
     <%= f.text_field :phone , :class => 'form-control',:required => true %>
   </div>
   <div class="field">
-    <h3><label>Banco y número de cuenta</label></h3>
+    <h3><label>Banco</label></h3>
+    <%= f.text_field :bank, :class => 'form-control', :required => true %>
+  </div>
+  <div class="field">
+    <h3><label>Número de cuenta</label></h3>
     <%= f.text_field :account, :class => 'form-control', :required => true %>
   </div>
   <div class="field">
