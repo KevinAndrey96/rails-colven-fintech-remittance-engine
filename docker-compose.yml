@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bash -c "bundle exec rake db:migrate 2>/dev/null || true && bundle exec rails server -b 0.0.0.0 -p 3000"
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      DB_ADAPTER: postgresql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: colven_development
+      DB_USER: postgres
+      DB_PASSWORD: postgrespassword
+      REDIS_URL: redis://redis:6379/1
+      SECRET_KEY_BASE: 446679dfd37d231ad48e0b0a5bf8ee74b8eb3ca9818fe2b0059bde32d4e39dcd2c2f3cc9a05798e121b4face44afabc1f5e608bd099e6cac477b96f55d985b77
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: colven_development
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  mailpit:
+    image: axllent/mailpit:latest
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  pgdata:
+  redisdata:
+  bundle_cache:
